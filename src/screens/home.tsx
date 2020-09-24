@@ -2,6 +2,7 @@ import React from 'react';
 import { FlatList, View, Pressable, RefreshControl } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage';
+import PushNotification from 'react-native-push-notification';
 import C, { apply } from 'consistencss';
 import ListItem from '../components/list';
 import Spacer from '../components/layout/spacer';
@@ -11,7 +12,11 @@ import Icon from '../components/addons/icon';
 import useSWR from 'swr';
 import EmptyState from '../components/list/empty-state';
 import NoAppsImage from '../assets/images/empty.png';
-import { BitriseApp } from '../interfaces/bitrise';
+import { BitriseApp, BitriseWebhook } from '../interfaces/bitrise';
+import '../Notifications';
+import bitrise from '../services/bitrise';
+import { filterWebhooks } from '../utils/bitrise-data';
+import { notification_token } from '../Notifications';
 
 const HomeScreen = () => {
   const { navigate, reset } = useNavigation();
@@ -21,15 +26,28 @@ const HomeScreen = () => {
 
   const apps = data?.data || [];
 
+  const logout = () => {
+    AsyncStorage.removeItem('token');
+    reset({ index: 0, routes: [{ name: 'Login' }] });
+    // remove webhooks and push notifications
+    PushNotification.abandonPermissions();
+    apps.map((app) =>
+      bitrise
+        .webhooks(app.slug)
+        .then((res) =>
+          filterWebhooks(res?.data || [], notification_token.token),
+        )
+        .then((webhooks: BitriseWebhook[]) =>
+          webhooks.map((hook) => bitrise.remove_webhook(app.slug, hook.slug)),
+        ),
+    );
+  };
+
   return (
     <View>
       <Header>
         <Title text="Your apps" />
-        <Pressable
-          onPress={() => {
-            AsyncStorage.removeItem('token');
-            reset({ index: 0, routes: [{ name: 'Login' }] });
-          }}>
+        <Pressable onPress={logout}>
           <Icon
             name="account-switch"
             size={32}

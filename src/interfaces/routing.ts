@@ -9,6 +9,7 @@ export type RootStackProps = {
     branchSelected?: string;
     workflowSelected?: string;
   };
+  Notifications: { app: BitriseApp };
   Finder: { data: string[]; key: string };
   BuildYaml: { app: BitriseApp };
   Build: { app: BitriseApp; build: BitriseBuild };

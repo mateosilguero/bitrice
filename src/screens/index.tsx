@@ -13,6 +13,7 @@ import BuildScreen from './build';
 import YamlScreen from './build-yml';
 import TriggerScreen from './trigger';
 import FinderScreen from './finder';
+import NotificationsScreen from './notifications';
 import { RootStackProps } from '../interfaces/routing';
 
 const Stack = createStackNavigator<RootStackProps>();
@@ -31,6 +32,7 @@ const RootStack = () => {
         <Stack.Screen name="Builds" component={BuildsScreen} />
         <Stack.Screen name="Trigger" component={TriggerScreen} />
         <Stack.Screen name="Finder" component={FinderScreen} />
+        <Stack.Screen name="Notifications" component={NotificationsScreen} />
         <Stack.Screen name="BuildYaml" component={YamlScreen} />
         <Stack.Screen name="Build" component={BuildScreen} />
       </Stack.Navigator>

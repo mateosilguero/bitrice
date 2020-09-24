@@ -2,6 +2,8 @@
 #
 .DS_Store
 
+.env
+
 # Xcode
 #
 build/
@@ -28,6 +30,8 @@ build/
 .gradle
 local.properties
 *.iml
+android/app/google-services.json
+android/gradle.properties
 
 # node.js
 #

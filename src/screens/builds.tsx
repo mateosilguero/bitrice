@@ -67,7 +67,7 @@ const BuildsScreen = () => {
 
   const { data, isValidating, mutate, revalidate } = useSWR<{
     data: BitriseBuild[];
-  }>(`/apps/${app.slug}/builds`);
+  }>(`/apps/${app.slug}/builds?limit=20`);
 
   const builds = data?.data || [];
 
@@ -86,9 +86,14 @@ const BuildsScreen = () => {
           </Pressable>
           <Title text={app.title || 'Builds'} />
         </Row>
-        <Pressable onPress={() => navigate('BuildYaml', { app })}>
-          <Icon name="lan" size={36} style={C.textPrimary} />
-        </Pressable>
+        <Row>
+          <Pressable onPress={() => navigate('Notifications', { app })}>
+            <Icon name="bell-plus" size={32} style={[C.textPrimary, C.mr4]} />
+          </Pressable>
+          <Pressable onPress={() => navigate('BuildYaml', { app })}>
+            <Icon name="file-tree" size={36} style={C.textPrimary} />
+          </Pressable>
+        </Row>
       </Header>
       <FlatList
         data={builds}

@@ -37,4 +37,14 @@ export default {
     }),
   abort_build: (app_id: string, build_id: string) =>
     fetcher(`/apps/${app_id}/builds/${build_id}/abort`, 'POST'),
+  webhooks: (app_id: string) => fetcher(`/apps/${app_id}/outgoing-webhooks`),
+  create_webhook: (app_id: string, notification_token: string) =>
+    fetcher(`/apps/${app_id}/outgoing-webhooks`, 'POST', {
+      events: ['build'],
+      headers: { 'notification-token': notification_token },
+      secret: '',
+      url: '', // env.send_notifications_url,
+    }),
+  remove_webhook: (app_id: string, webhook_id: string) =>
+    fetcher(`/apps/${app_id}/outgoing-webhooks/${webhook_id}`, 'DELETE'),
 };

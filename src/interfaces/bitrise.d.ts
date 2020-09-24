@@ -27,3 +27,11 @@ export interface BitriseLog {
     position: number;
   }[];
 }
+
+export interface BitriseWebhook {
+  events: string[];
+  headers: { [k: string]: string };
+  registered_by_addon: boolean;
+  slug: string;
+  url: string;
+}

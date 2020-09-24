@@ -14,7 +14,7 @@ import Row from '../components/layout/row';
 import { RootStackProps } from '../interfaces/routing';
 import useSWR from 'swr';
 
-const HomeScreen = () => {
+const YamlScreen = () => {
   const { goBack } = useNavigation();
   const {
     params: { app },
@@ -60,4 +60,4 @@ const HomeScreen = () => {
   );
 };
 
-export default HomeScreen;
+export default YamlScreen;

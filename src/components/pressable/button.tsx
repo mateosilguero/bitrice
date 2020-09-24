@@ -1,6 +1,6 @@
 import C, { apply, Text, theme } from 'consistencss';
-import React from 'react';
-import { PressableProps } from 'react-native';
+import React, { FC } from 'react';
+import { PressableProps, TextProps } from 'react-native';
 import Icon, { IconProps } from '../addons/icon';
 import { Pressable } from './index';
 
@@ -20,8 +20,8 @@ const styles = {
   text: apply(C.font6, C.textWhite, C.px1),
 };
 
-const ButtonText = (props: { text: string }) => (
-  <Text style={styles.text}>{props.text}</Text>
+const ButtonText: FC<{ text: string } & TextProps> = (props) => (
+  <Text style={[styles.text, props.style]}>{props.text}</Text>
 );
 
 const ButtonIcon = (props: IconProps) => (

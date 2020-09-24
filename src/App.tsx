@@ -12,6 +12,7 @@ import C, { apply, extend } from 'consistencss';
 import { SWRConfig } from 'swr';
 import RootStack from './screens';
 import { fetcher } from './services/bitrise';
+import OfflineScreen from './screens/offline';
 
 extend({
   colors: {
@@ -24,10 +25,10 @@ extend({
     error: '#ff2158',
   },
   fonts: {
-    primary: 'TTNorms-Medium',
+    primary: 'ttnorms_medium',
   },
   components: {
-    Text: { fontFamily: 'TTNorms-Medium' },
+    Text: { fontFamily: 'ttnorms_medium' },
   },
 });
 
@@ -38,6 +39,7 @@ const App = () => {
       <SafeAreaView style={apply(C.flex, C.bgWhite)}>
         <SWRConfig value={{ fetcher }}>
           <RootStack />
+          <OfflineScreen />
         </SWRConfig>
       </SafeAreaView>
     </>

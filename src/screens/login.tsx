@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { Image } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import SplashScreen from 'react-native-splash-screen';
 import bitrise, { setApiToken } from '../services/bitrise';
 import C from 'consistencss';
 import { useNavigation } from '@react-navigation/native';
@@ -27,6 +28,8 @@ const LoginScreen = () => {
         });
       } catch (e) {
         AsyncStorage.removeItem('token');
+      } finally {
+        SplashScreen.hide();
       }
     },
     [reset],
@@ -36,6 +39,8 @@ const LoginScreen = () => {
     AsyncStorage.getItem('token').then((t) => {
       if (t) {
         login(t);
+      } else {
+        SplashScreen.hide();
       }
     });
   }, [login]);
@@ -61,7 +66,7 @@ const LoginScreen = () => {
             }
           />
         </TextInput.Container>
-        <TextInput.Label text="" />
+        <TextInput.Label text="Generate a new token at bitrise.io" />
       </TextInput>
       <Spacer top={0} />
       <Button disabled={!token} onPress={() => login(token)}>

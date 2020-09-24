@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">bitrice</string>
+    <string name="app_name">Bitrice</string>
+    <string name="app_desc">unofficial bitrise client</string>
 </resources>
