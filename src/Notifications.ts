@@ -7,7 +7,6 @@ export let notification_token = {
 
 PushNotification.configure({
   onRegister: function (token) {
-    console.log(token);
     notification_token = token;
   },
   onNotification: function (notification) {

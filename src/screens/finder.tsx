@@ -27,7 +27,9 @@ const FinderScreen = () => {
         </TextInput.Container>
       </TextInput>
       <FlatList
-        data={data.filter((e) => e.includes(search))}
+        data={data.filter((e) =>
+          e.toLowerCase().includes(search.toLowerCase()),
+        )}
         keyExtractor={(item) => item}
         renderItem={({ item }) => (
           <Pressable

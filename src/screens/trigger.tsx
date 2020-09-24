@@ -10,6 +10,7 @@ import { Pressable } from '../components/pressable';
 import bitrise from '../services/bitrise';
 import { RootStackProps } from '../interfaces/routing';
 import { throttle } from '../utils/invokes';
+import C, { apply } from 'consistencss';
 
 const TriggerScreen = () => {
   const {
@@ -40,7 +41,7 @@ const TriggerScreen = () => {
 
   return (
     <Spacer horizontal={4} vertical={4}>
-      <Pressable onPress={goBack}>
+      <Pressable onPress={goBack} style={C.w8}>
         <Icon name="arrow-left" size={28} />
       </Pressable>
       <Spacer horizontal={0} vertical={4} />
@@ -52,10 +53,11 @@ const TriggerScreen = () => {
             <TextInput.Icon name="source-branch" />
             <TextInput.Field value={branch} onChangeText={setBranch} />
             <Pressable
+              style={apply(C.bgPrimary, C.p1, C.py3, C.radius4)}
               onPress={() =>
                 navigate('Finder', { data: branches?.data, key: 'branch' })
               }>
-              <TextInput.Icon name="magnify" />
+              <TextInput.Icon style={C.textWhite} name="magnify" />
             </Pressable>
           </TextInput.Container>
         </TextInput>
@@ -66,10 +68,11 @@ const TriggerScreen = () => {
             <TextInput.Icon name="network" />
             <TextInput.Field value={workflow} onChangeText={setWorkflow} />
             <Pressable
+              style={apply(C.bgPrimary, C.p1, C.py3, C.radius4)}
               onPress={() =>
                 navigate('Finder', { data: workflows?.data, key: 'workflow' })
               }>
-              <TextInput.Icon name="magnify" />
+              <TextInput.Icon style={C.textWhite} name="magnify" />
             </Pressable>
           </TextInput.Container>
         </TextInput>

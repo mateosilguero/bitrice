@@ -12,7 +12,7 @@ import EmptyState from '../components/list/empty-state';
 import { BitriseWebhook } from '../interfaces/bitrise';
 import { notification_token } from '../Notifications';
 import { ActivityIndicator } from 'react-native';
-import { theme, getSizeFor } from 'consistencss';
+import C, { theme, getSizeFor } from 'consistencss';
 import { filterWebhooks } from '../utils/bitrise-data';
 
 const NotificationsScreen = () => {
@@ -43,7 +43,7 @@ const NotificationsScreen = () => {
 
   return (
     <Spacer horizontal={4} vertical={4}>
-      <Pressable onPress={goBack}>
+      <Pressable onPress={goBack} style={C.w8}>
         <Icon name="arrow-left" size={28} />
       </Pressable>
       <Spacer horizontal={0} vertical={4} />

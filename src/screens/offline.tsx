@@ -8,7 +8,7 @@ import Icon from '../components/addons/icon';
 const OfflineScreen = () => {
   const { isInternetReachable } = useNetInfo();
 
-  const isOffline = isInternetReachable !== null ? !isInternetReachable : false;
+  const isOffline = isInternetReachable === false;
 
   return (
     <Modal transparent={true} visible={isOffline} animationType="fade">

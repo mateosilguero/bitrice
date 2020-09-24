@@ -9,6 +9,8 @@ const statuses = (build_number) => [
   `Build #${build_number} was aborted.`,
 ];
 
+const colors = [undefined, '#0fc389', '#ff2158', '#ffc500'];
+
 exports.sendPushNotification = functions.https.onRequest((req, res) => {
   const build_data = req.body;
   const token = req.headers['notification-token'];
@@ -18,6 +20,7 @@ exports.sendPushNotification = functions.https.onRequest((req, res) => {
       notification: {
         title: statuses(build_data.build_number)[build_data.build_status],
         body: build_data.build_triggered_workflow,
+        color: colors[build_data.build_status],
       },
     };
     admin
