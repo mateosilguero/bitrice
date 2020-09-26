@@ -9,7 +9,7 @@ import C from 'consistencss';
 import HomeScreen from './home';
 import LoginScreen from './login';
 import BuildsScreen from './builds';
-import BuildScreen from './build';
+import BuildScreen from './build-screen';
 import YamlScreen from './build-yml';
 import TriggerScreen from './trigger';
 import FinderScreen from './finder';
