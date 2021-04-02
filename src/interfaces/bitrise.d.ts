@@ -5,6 +5,12 @@ export interface BitriseApp {
   avatar_url: string | null;
 }
 
+export interface EnvVars {
+  is_expand: boolean;
+  mapped_to: string;
+  value: string;
+}
+
 export interface BitriseBuild {
   slug: string;
   branch: string;
@@ -13,6 +19,7 @@ export interface BitriseBuild {
   original_build_params: {
     branch: string;
     workflow_id: string;
+    environments: EnvVars[];
   };
   status: number;
   started_on_worker_at: string;

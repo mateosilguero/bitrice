@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { View } from 'react-native';
 import C, { apply } from 'consistencss';
 
@@ -17,6 +17,8 @@ const styles = apply(
   },
 );
 
-const ScreenHeader = (props) => <View style={styles}>{props.children}</View>;
+const ScreenHeader: FC = (props) => (
+  <View style={styles}>{props.children}</View>
+);
 
 export default ScreenHeader;

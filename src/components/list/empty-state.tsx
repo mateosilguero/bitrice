@@ -1,14 +1,20 @@
-import C, { apply, theme } from 'consistencss';
-import React, { PropsWithChildren } from 'react';
-import { Image as RNImage, View, ViewProps, ImageProps } from 'react-native';
+import C, { apply } from 'consistencss';
+import React, { FC, PropsWithChildren } from 'react';
+import {
+  Image as RNImage,
+  View,
+  ViewProps,
+  ImageProps,
+  ImageStyle,
+} from 'react-native';
 import { Label, Title } from '../typography';
 
 const styles = {
   container: apply(C.justifyCenter, C.itemsCenter, C.selfCenter, C.alignCenter),
-  image: apply(C.w44),
+  image: C.w44 as ImageStyle,
 };
 
-const Image = (props: ImageProps) => (
+const Image: FC<ImageProps> = (props) => (
   <RNImage
     {...props}
     style={[styles.image, props.style]}

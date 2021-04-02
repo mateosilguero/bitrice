@@ -67,7 +67,7 @@ const BuildsScreen = () => {
 
   const { data, isValidating, mutate, revalidate } = useSWR<{
     data: BitriseBuild[];
-  }>(`/apps/${app.slug}/builds?limit=20`);
+  }>(`/apps/${app.slug}/builds?limit=10`);
 
   const builds = data?.data || [];
 
@@ -175,7 +175,10 @@ const BuildsScreen = () => {
         ListEmptyComponent={
           !isValidating ? (
             <EmptyState>
-              <EmptyState.Image source={Sleeping} style={[C.mr_8, C.mb_4]} />
+              <EmptyState.Image
+                source={Sleeping}
+                style={apply(C.mr_8, C.mb_4)}
+              />
               <EmptyState.Title text="Bitbot is sleeping" />
               <EmptyState.Description text="Let's trigger a new build !" />
               <Spacer bottom={4} />

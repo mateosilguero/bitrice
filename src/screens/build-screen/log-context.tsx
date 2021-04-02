@@ -3,19 +3,20 @@ import useSWR from 'swr';
 import { RootStackProps } from '../../interfaces/routing';
 import { BitriseApp, BitriseBuild, BitriseLog } from '../../interfaces/bitrise';
 
-export const LogContext = createContext<[string, BitriseBuild, BitriseApp]>([
-  '',
-  {} as BitriseBuild,
-  {} as BitriseApp,
-]);
+export const LogContext = createContext<
+  [string, BitriseBuild, BitriseApp, boolean]
+>(['', {} as BitriseBuild, {} as BitriseApp, true]);
 
 const Logs: FC<Pick<RootStackProps, 'Build'>> = ({
   Build: { app, build },
   children,
 }) => {
-  const { data: buildInfo } = useSWR(`/apps/${app.slug}/builds/${build.slug}`, {
-    refreshInterval: build.status === 0 ? 5000 : 0,
-  });
+  const { data: buildInfo, isValidating } = useSWR(
+    `/apps/${app.slug}/builds/${build.slug}`,
+    {
+      refreshInterval: build.status === 0 ? 5000 : 0,
+    },
+  );
 
   const { data: rawLogs } = useSWR<BitriseLog>(
     `/apps/${app.slug}/builds/${build.slug}/log`,
@@ -39,7 +40,8 @@ const Logs: FC<Pick<RootStackProps, 'Build'>> = ({
       .join('\n') || '';
 
   return (
-    <LogContext.Provider value={[logs, buildInfo?.data || build, app]}>
+    <LogContext.Provider
+      value={[logs, buildInfo?.data || build, app, isValidating]}>
       {children}
     </LogContext.Provider>
   );

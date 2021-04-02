@@ -1,7 +1,7 @@
 import React from 'react';
 import { FlatList, View, Pressable, RefreshControl } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import AsyncStorage from '@react-native-community/async-storage';
+import MMKVStorage from '../utils/storage';
 import PushNotification from 'react-native-push-notification';
 import C, { apply } from 'consistencss';
 import ListItem from '../components/list';
@@ -27,7 +27,7 @@ const HomeScreen = () => {
   const apps = data?.data || [];
 
   const logout = () => {
-    AsyncStorage.removeItem('token');
+    MMKVStorage.removeItem('token');
     reset({ index: 0, routes: [{ name: 'Login' }] });
     // remove webhooks and push notifications
     PushNotification.abandonPermissions();

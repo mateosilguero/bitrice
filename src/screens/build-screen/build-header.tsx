@@ -50,6 +50,7 @@ const BuildHeader: FC<Props> = ({
         app.slug,
         build.original_build_params.branch,
         build.original_build_params.workflow_id,
+        build.original_build_params.environments,
       )
       .finally(() => navigate('Builds'));
   });

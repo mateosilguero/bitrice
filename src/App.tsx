@@ -32,18 +32,16 @@ extend({
   },
 });
 
-const App = () => {
-  return (
-    <>
-      <StatusBar backgroundColor="white" barStyle="dark-content" />
-      <SafeAreaView style={apply(C.flex, C.bgWhite)}>
-        <SWRConfig value={{ fetcher }}>
-          <RootStack />
-          <OfflineScreen />
-        </SWRConfig>
-      </SafeAreaView>
-    </>
-  );
-};
+const App = () => (
+  <>
+    <StatusBar backgroundColor="white" barStyle="dark-content" />
+    <SafeAreaView style={apply(C.flex, C.bgWhite)}>
+      <SWRConfig value={{ fetcher }}>
+        <RootStack />
+        <OfflineScreen />
+      </SWRConfig>
+    </SafeAreaView>
+  </>
+);
 
 export default App;

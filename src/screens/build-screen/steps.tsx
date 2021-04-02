@@ -1,5 +1,5 @@
-import React, { useContext } from 'react';
-import { FlatList, View } from 'react-native';
+import React, { useContext, useMemo } from 'react';
+import { FlatList, RefreshControl, View } from 'react-native';
 import { LogContext } from './log-context';
 import C, { apply, theme } from 'consistencss';
 import ListItem from '../../components/list';
@@ -19,7 +19,7 @@ interface Step {
 }
 
 const StepsScreen = () => {
-  const [logs, build, app] = useContext(LogContext);
+  const [logs, build, app, isValidating] = useContext(LogContext);
   const { navigate } = useNavigation();
 
   const statuses = [
@@ -37,16 +37,22 @@ const StepsScreen = () => {
     },
   ];
 
-  const parsedLogs = uniqueElementsBy<Step>(
-    logs?.match(/\| ((.?)+) \| ((.?)+) \| ((.?)+(sec|min)) ?\|/g)?.map((e) => {
-      const [, rawStatus, name, time] = e.split('|').map((x) => x.trim());
-      const [step, version = ''] = name.split('@');
-      const parsedVersion = version ? `version: ${version} -` : '';
-      const status = ['✓', 'x', '-'].indexOf(rawStatus);
-      return { name, step, version: parsedVersion, status, time };
-    }) || [],
-    (a, b) => a.name === b.name,
-  ).sort((a, b) => (a.status < b.status ? -1 : 1));
+  const parsedLogs = useMemo(
+    () =>
+      uniqueElementsBy<Step>(
+        logs
+          ?.match(/\| ((.?)+) \| ((.?)+) \| ((.?)+(sec|min)) ?\|/g)
+          ?.map((e) => {
+            const [, rawStatus, name, time] = e.split('|').map((x) => x.trim());
+            const [step, version = ''] = name.split('@');
+            const parsedVersion = version ? `version: ${version} -` : '';
+            const status = ['✓', 'x', '-'].indexOf(rawStatus);
+            return { name, step, version: parsedVersion, status, time };
+          }) || [],
+        (a, b) => a.name === b.name,
+      ).sort((a, b) => (a.status < b.status ? -1 : 1)),
+    [logs],
+  );
 
   return (
     <View style={apply(C.flex, C.bgWhite, C.justifyCenter)}>
@@ -54,6 +60,7 @@ const StepsScreen = () => {
       <FlatList
         data={parsedLogs}
         keyExtractor={(item) => item.step}
+        refreshControl={<RefreshControl refreshing={isValidating} />}
         renderItem={({ item }) => {
           const status = statuses[item.status];
           return (
@@ -71,7 +78,7 @@ const StepsScreen = () => {
           );
         }}
         ListEmptyComponent={
-          build !== undefined || logs === '' ? (
+          !isValidating ? (
             <EmptyState>
               <EmptyState.Image source={EmptyImage} />
               <EmptyState.Title text="Your bowl is clean !" />

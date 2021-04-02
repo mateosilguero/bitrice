@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { Image } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
+import MMKVStorage from '../utils/storage';
 import SplashScreen from 'react-native-splash-screen';
 import bitrise, { setApiToken } from '../services/bitrise';
-import C from 'consistencss';
+import C, { apply } from 'consistencss';
 import { useNavigation } from '@react-navigation/native';
 import TextInput from '../components/input/textinput';
 import Spacer from '../components/layout/spacer';
@@ -21,13 +21,13 @@ const LoginScreen = () => {
       setApiToken(t);
       try {
         await bitrise.me();
-        await AsyncStorage.setItem('token', t);
+        MMKVStorage.setString('token', t);
         reset({
           index: 0,
           routes: [{ name: 'Home' }],
         });
       } catch (e) {
-        AsyncStorage.removeItem('token');
+        MMKVStorage.removeItem('token');
       } finally {
         SplashScreen.hide();
       }
@@ -36,18 +36,17 @@ const LoginScreen = () => {
   );
 
   useEffect(() => {
-    AsyncStorage.getItem('token').then((t) => {
-      if (t) {
-        login(t);
-      } else {
-        SplashScreen.hide();
-      }
-    });
+    const t = MMKVStorage.getString('token');
+    if (t) {
+      login(t);
+    } else {
+      SplashScreen.hide();
+    }
   }, [login]);
 
   return (
     <Spacer horizontal={8} vertical={4}>
-      <Image source={Logo} style={[C.wFull, C.h28]} resizeMode="contain" />
+      <Image source={Logo} style={apply(C.wFull, C.h28)} resizeMode="contain" />
       <Spacer top={4} />
       <Title text="Bitrice" style={C.alignCenter} />
       <Label text="unofficial bitirise client" style={C.alignCenter} />

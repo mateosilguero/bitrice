@@ -11,6 +11,7 @@ import bitrise from '../services/bitrise';
 import { RootStackProps } from '../interfaces/routing';
 import { throttle } from '../utils/invokes';
 import C, { apply } from 'consistencss';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const TriggerScreen = () => {
   const {
@@ -23,6 +24,7 @@ const TriggerScreen = () => {
 
   const [branch, setBranch] = useState('');
   const [workflow, setWorkflow] = useState('');
+  const [envs, setEnvs] = useState('');
 
   useEffect(() => {
     if (branchSelected) {
@@ -34,55 +36,78 @@ const TriggerScreen = () => {
   }, [branchSelected, workflowSelected]);
 
   const throttledTrigger = throttle(() => {
-    bitrise.post_build(app.slug, branch, workflow).then(() => {
+    const environments = envs.split('\n').map((env) => {
+      const [key, value] = env.split('=');
+      return {
+        is_expand: true,
+        mapped_to: key,
+        value,
+      };
+    });
+    bitrise.post_build(app.slug, branch, workflow, environments).then(() => {
       goBack();
     });
   });
 
   return (
-    <Spacer horizontal={4} vertical={4}>
-      <Pressable onPress={goBack} style={C.w8}>
-        <Icon name="arrow-left" size={28} />
-      </Pressable>
-      <Spacer horizontal={0} vertical={4} />
-      <Title text="New build" />
-      <Spacer horizontal={0} vertical={6}>
-        <TextInput>
-          <TextInput.Label text="Branch" />
-          <TextInput.Container>
-            <TextInput.Icon name="source-branch" />
-            <TextInput.Field value={branch} onChangeText={setBranch} />
-            <Pressable
-              style={apply(C.bgPrimary, C.p1, C.py3, C.radius4)}
-              onPress={() =>
-                navigate('Finder', { data: branches?.data, key: 'branch' })
-              }>
-              <TextInput.Icon style={C.textWhite} name="magnify" />
-            </Pressable>
-          </TextInput.Container>
-        </TextInput>
-        <Spacer />
-        <TextInput>
-          <TextInput.Label text="Workflow" />
-          <TextInput.Container>
-            <TextInput.Icon name="network" />
-            <TextInput.Field value={workflow} onChangeText={setWorkflow} />
-            <Pressable
-              style={apply(C.bgPrimary, C.p1, C.py3, C.radius4)}
-              onPress={() =>
-                navigate('Finder', { data: workflows?.data, key: 'workflow' })
-              }>
-              <TextInput.Icon style={C.textWhite} name="magnify" />
-            </Pressable>
-          </TextInput.Container>
-        </TextInput>
-        <Spacer top={8} />
-        <Button disabled={!branch || !workflow} onPress={throttledTrigger}>
-          <Button.Text text="Trigger" />
-          <Button.Icon name="flash" />
-        </Button>
+    <ScrollView>
+      <Spacer horizontal={4} vertical={4}>
+        <Pressable onPress={goBack} style={C.w8}>
+          <Icon name="arrow-left" size={28} />
+        </Pressable>
+        <Spacer horizontal={0} vertical={4} />
+        <Title text="New build" />
+        <Spacer horizontal={0} vertical={6}>
+          <TextInput>
+            <TextInput.Label text="Branch" />
+            <TextInput.Container>
+              <TextInput.Icon name="source-branch" />
+              <TextInput.Field value={branch} onChangeText={setBranch} />
+              <Pressable
+                style={apply(C.bgPrimary, C.p1, C.py3, C.radius4)}
+                onPress={() =>
+                  navigate('Finder', { data: branches?.data, key: 'branch' })
+                }>
+                <TextInput.Icon style={C.textWhite} name="magnify" />
+              </Pressable>
+            </TextInput.Container>
+          </TextInput>
+          <Spacer />
+          <TextInput>
+            <TextInput.Label text="Workflow" />
+            <TextInput.Container>
+              <TextInput.Icon name="network" />
+              <TextInput.Field value={workflow} onChangeText={setWorkflow} />
+              <Pressable
+                style={apply(C.bgPrimary, C.p1, C.py3, C.radius4)}
+                onPress={() =>
+                  navigate('Finder', { data: workflows?.data, key: 'workflow' })
+                }>
+                <TextInput.Icon style={C.textWhite} name="magnify" />
+              </Pressable>
+            </TextInput.Container>
+          </TextInput>
+          <Spacer />
+          <TextInput>
+            <TextInput.Label text="Environments Variables" />
+            <TextInput.Container>
+              <TextInput.Icon name="shield-key" />
+              <TextInput.Field
+                value={envs}
+                onChangeText={setEnvs}
+                placeholder={'SKIP_BUILD=true \nAPI_KEY=1'}
+                multiline
+              />
+            </TextInput.Container>
+          </TextInput>
+          <Spacer top={8} />
+          <Button disabled={!branch || !workflow} onPress={throttledTrigger}>
+            <Button.Text text="Trigger" />
+            <Button.Icon name="flash" />
+          </Button>
+        </Spacer>
       </Spacer>
-    </Spacer>
+    </ScrollView>
   );
 };
 

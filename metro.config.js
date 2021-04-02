@@ -4,7 +4,7 @@
  *
  * @format
  */
-const blacklist = require('metro-config/src/defaults/blacklist');
+const exclusionList = require('metro-config/src/defaults/exclusionList');
 
 module.exports = {
   transformer: {
@@ -16,6 +16,6 @@ module.exports = {
     }),
   },
   resolver: {
-    blacklistRE: blacklist([/functions\/.*/]),
+    blacklistRE: exclusionList([/functions\/.*/]),
   },
 };

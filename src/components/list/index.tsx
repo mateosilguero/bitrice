@@ -1,6 +1,12 @@
 import C, { apply, theme } from 'consistencss';
 import React, { PropsWithChildren } from 'react';
-import { Image as RNImage, View, ViewProps, ImageProps } from 'react-native';
+import {
+  Image as RNImage,
+  View,
+  ViewProps,
+  ImageProps,
+  ImageStyle,
+} from 'react-native';
 import Icon, { IconProps } from '../addons/icon';
 import { Label, Title } from '../typography';
 
@@ -8,7 +14,7 @@ const styles = {
   container: apply(C.row, C.bgWhite, C.shadowMd, C.radius4, C.overflowHidden),
   content: apply(C.flex, C.py1, C.px4),
   icon: apply(C.font6, C.my1, C.mx2, C.w6),
-  image: apply(C.w14, C.minh18),
+  image: apply(C.w14, C.minh18) as ImageStyle,
 };
 
 const Content = (props: PropsWithChildren<ViewProps>) => (
